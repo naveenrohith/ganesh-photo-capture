@@ -26,9 +26,15 @@ const Footer = () => {
               Your story, beautifully told through our lens.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="sm" className="text-background hover:text-accent">
-                <Instagram className="h-5 w-5" />
-              </Button>
+              <a 
+                href="https://instagram.com/ganeshphotography.co" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button variant="ghost" size="sm" className="text-background hover:text-accent">
+                  <Instagram className="h-5 w-5" />
+                </Button>
+              </a>
               <Button variant="ghost" size="sm" className="text-background hover:text-accent">
                 <Facebook className="h-5 w-5" />
               </Button>
