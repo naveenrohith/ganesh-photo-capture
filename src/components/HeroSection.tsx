@@ -1,22 +1,20 @@
 import { ArrowDown, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroWedding from "@/assets/hero-wedding.jpg";
-
 const HeroSection = () => {
   const scrollToForm = () => {
     const element = document.getElementById('enquiry-form');
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-
-  return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  return <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroWedding})` }}
-      >
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+      backgroundImage: `url(${heroWedding})`
+    }}>
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
@@ -25,13 +23,7 @@ const HeroSection = () => {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Logo Animation */}
           <div className="flex justify-center mb-8">
-            <div className="bg-white/10 backdrop-blur-md rounded-full p-6 logo-animate">
-              <img 
-                src="/lovable-uploads/1f1f3ce2-583f-4e7e-a019-835bb00a5e71.png" 
-                alt="GV Logo" 
-                className="h-16 w-auto filter brightness-0 invert"
-              />
-            </div>
+            
           </div>
 
           {/* Main Headline */}
@@ -52,20 +44,12 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Button
-              variant="premium"
-              size="lg"
-              onClick={scrollToForm}
-              className="text-lg px-8 py-4 min-w-[200px]"
-            >
+            <Button variant="premium" size="lg" onClick={scrollToForm} className="text-lg px-8 py-4 min-w-[200px]">
               Get Instant Quote
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-lg px-8 py-4 min-w-[200px] border-white/30 text-white hover:bg-white/10"
-            >
+            <Button variant="outline" size="lg" onClick={() => document.getElementById('portfolio')?.scrollIntoView({
+            behavior: 'smooth'
+          })} className="text-lg px-8 py-4 min-w-[200px] border-white/30 text-white hover:bg-white/10">
               <Camera className="mr-2 h-5 w-5" />
               View Portfolio
             </Button>
@@ -97,8 +81,6 @@ const HeroSection = () => {
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <ArrowDown className="h-6 w-6 text-white/60" />
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
