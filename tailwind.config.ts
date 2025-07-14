@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				poppins: ['Poppins', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +64,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Photography Brand Colors
+				gold: {
+					DEFAULT: 'hsl(var(--gold))',
+					hover: 'hsl(var(--gold-hover))'
+				},
+				photography: {
+					black: 'hsl(var(--black))',
+					'light-gray': 'hsl(var(--light-gray))'
 				}
 			},
 			borderRadius: {
