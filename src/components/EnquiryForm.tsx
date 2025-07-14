@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,7 @@ import {
   Gift
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FormData {
   // Step 1
@@ -49,6 +50,15 @@ interface FormData {
   specialRequests: string;
 }
 
+interface Service {
+  id: string;
+  category: string;
+  service_id: string;
+  name: string;
+  price: number;
+  description?: string;
+}
+
 const eventTypes = [
   { id: 'wedding', name: 'Wedding', icon: Heart, price: 'Starting ₹50,000' },
   { id: 'birthday', name: 'Birthday', icon: Gift, price: 'Starting ₹15,000' },
@@ -56,26 +66,11 @@ const eventTypes = [
   { id: 'fashion', name: 'Fashion Shoot', icon: Camera, price: 'Starting ₹20,000' },
 ];
 
-const ceremonies = [
-  { id: 'haldi', name: 'Haldi Ceremony', price: 15000 },
-  { id: 'mehendi', name: 'Mehendi Ceremony', price: 20000 },
-  { id: 'sangam', name: 'Sangam Ceremony', price: 18000 },
-  { id: 'wedding', name: 'Main Wedding', price: 35000 },
-  { id: 'reception', name: 'Reception', price: 30000 },
-];
-
 const photographyStyles = [
   { id: 'traditional', name: 'Traditional', description: 'Classic posed shots with cultural elements' },
   { id: 'candid', name: 'Candid', description: 'Natural moments and emotions captured' },
   { id: 'cinematic', name: 'Cinematic', description: 'Movie-like storytelling approach' },
   { id: 'contemporary', name: 'Contemporary', description: 'Modern artistic photography' },
-];
-
-const addOns = [
-  { id: 'drone', name: 'Drone Photography', price: 10000 },
-  { id: 'album', name: 'Premium Photo Album', price: 15000 },
-  { id: 'video', name: 'Highlight Video', price: 25000 },
-  { id: 'raw', name: 'Raw Photo Files', price: 8000 },
 ];
 
 const EnquiryForm = () => {
@@ -93,10 +88,32 @@ const EnquiryForm = () => {
     addOns: [],
     specialRequests: '',
   });
+  const [services, setServices] = useState<Service[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { toast } = useToast();
   const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
+
+  // Fetch services from database
+  useEffect(() => {
+    const fetchServices = async () => {
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .eq('active', true);
+      
+      if (data && !error) {
+        setServices(data);
+      }
+    };
+    
+    fetchServices();
+  }, []);
+
+  // Get dynamic data from services
+  const ceremonies = services.filter(s => s.category === 'ceremony');
+  const addOns = services.filter(s => s.category === 'add_on');
 
   const calculateQuote = () => {
     let total = 0;
@@ -104,7 +121,7 @@ const EnquiryForm = () => {
     // Base event type pricing
     if (formData.eventType === 'wedding') {
       total += formData.ceremonies.reduce((sum, ceremony) => {
-        const ceremonyPrice = ceremonies.find(c => c.id === ceremony)?.price || 0;
+        const ceremonyPrice = ceremonies.find(c => c.service_id === ceremony)?.price || 0;
         return sum + ceremonyPrice;
       }, 0);
       
@@ -112,20 +129,20 @@ const EnquiryForm = () => {
       if (formData.ceremonies.length >= 3) {
         total *= 0.85; // 15% discount
       }
-    } else if (formData.eventType === 'birthday') {
-      total += 15000;
-      if (parseInt(formData.guestCount) > 100) {
+    } else {
+      // Get base price from services
+      const eventService = services.find(s => s.category === 'event_type' && s.service_id === formData.eventType);
+      total += eventService?.price || 0;
+      
+      // Additional pricing for birthday based on guest count
+      if (formData.eventType === 'birthday' && parseInt(formData.guestCount) > 100) {
         total += 5000;
       }
-    } else if (formData.eventType === 'corporate') {
-      total += 25000;
-    } else if (formData.eventType === 'fashion') {
-      total += 20000;
     }
     
     // Add-ons
     total += formData.addOns.reduce((sum, addOn) => {
-      const addOnPrice = addOns.find(a => a.id === addOn)?.price || 0;
+      const addOnPrice = addOns.find(a => a.service_id === addOn)?.price || 0;
       return sum + addOnPrice;
     }, 0);
     
@@ -145,28 +162,68 @@ const EnquiryForm = () => {
   };
 
   const handleSubmit = async () => {
-    // Here you would typically save to your backend
-    console.log('Form submitted:', formData);
-    toast({
-      title: "Quote Request Submitted!",
-      description: "We'll contact you within 24 hours with your personalized quote.",
-    });
+    setIsSubmitting(true);
     
-    // Reset form or redirect to thank you page
-    setCurrentStep(1);
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      eventType: '',
-      venue: '',
-      ceremonies: [],
-      duration: '',
-      guestCount: '',
-      style: '',
-      addOns: [],
-      specialRequests: '',
-    });
+    try {
+      const quote = calculateQuote();
+      
+      // Save lead to database
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          event_type: formData.eventType,
+          event_date: formData.date?.toISOString().split('T')[0] || null,
+          venue: formData.venue,
+          ceremonies: formData.ceremonies,
+          duration: formData.duration,
+          guest_count: formData.guestCount,
+          photography_style: formData.style,
+          add_ons: formData.addOns,
+          special_requests: formData.specialRequests,
+          estimated_quote: quote,
+          status: 'NEW'
+        }])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('Form submitted:', formData);
+      toast({
+        title: "Quote Request Submitted!",
+        description: "We'll contact you within 24 hours with your personalized quote.",
+      });
+      
+      // Reset form
+      setCurrentStep(1);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        eventType: '',
+        venue: '',
+        ceremonies: [],
+        duration: '',
+        guestCount: '',
+        style: '',
+        addOns: [],
+        specialRequests: '',
+      });
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStep = () => {
@@ -306,25 +363,25 @@ const EnquiryForm = () => {
                   <Label>Ceremonies to Cover</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                     {ceremonies.map((ceremony) => (
-                      <div key={ceremony.id} className="flex items-center space-x-2">
+                      <div key={ceremony.service_id} className="flex items-center space-x-2">
                         <Checkbox
-                          id={ceremony.id}
-                          checked={formData.ceremonies.includes(ceremony.id)}
+                          id={ceremony.service_id}
+                          checked={formData.ceremonies.includes(ceremony.service_id)}
                           onCheckedChange={(checked) => {
                             if (checked) {
                               setFormData({
                                 ...formData,
-                                ceremonies: [...formData.ceremonies, ceremony.id]
+                                ceremonies: [...formData.ceremonies, ceremony.service_id]
                               });
                             } else {
                               setFormData({
                                 ...formData,
-                                ceremonies: formData.ceremonies.filter(c => c !== ceremony.id)
+                                ceremonies: formData.ceremonies.filter(c => c !== ceremony.service_id)
                               });
                             }
                           }}
                         />
-                        <Label htmlFor={ceremony.id} className="text-sm font-normal">
+                        <Label htmlFor={ceremony.service_id} className="text-sm font-normal">
                           {ceremony.name} - ₹{ceremony.price.toLocaleString()}
                         </Label>
                       </div>
@@ -402,26 +459,26 @@ const EnquiryForm = () => {
                 <Label>Add-ons</Label>
                 <div className="space-y-3 mt-2">
                   {addOns.map((addOn) => (
-                    <div key={addOn.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div key={addOn.service_id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div className="flex items-center space-x-3">
                         <Checkbox
-                          id={addOn.id}
-                          checked={formData.addOns.includes(addOn.id)}
+                          id={addOn.service_id}
+                          checked={formData.addOns.includes(addOn.service_id)}
                           onCheckedChange={(checked) => {
                             if (checked) {
                               setFormData({
                                 ...formData,
-                                addOns: [...formData.addOns, addOn.id]
+                                addOns: [...formData.addOns, addOn.service_id]
                               });
                             } else {
                               setFormData({
                                 ...formData,
-                                addOns: formData.addOns.filter(a => a !== addOn.id)
+                                addOns: formData.addOns.filter(a => a !== addOn.service_id)
                               });
                             }
                           }}
                         />
-                        <Label htmlFor={addOn.id} className="font-normal">
+                        <Label htmlFor={addOn.service_id} className="font-normal">
                           {addOn.name}
                         </Label>
                       </div>
@@ -495,10 +552,11 @@ const EnquiryForm = () => {
                 variant="premium"
                 size="lg"
                 onClick={handleSubmit}
+                disabled={isSubmitting}
                 className="w-full"
               >
                 <CheckCircle className="mr-2 h-5 w-5" />
-                Submit Quote Request
+                {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
               </Button>
             </div>
           </div>

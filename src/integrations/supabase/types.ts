@@ -14,7 +14,102 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          add_ons: string[] | null
+          ceremonies: string[] | null
+          created_at: string
+          duration: string | null
+          email: string
+          estimated_quote: number | null
+          event_date: string | null
+          event_type: string
+          guest_count: string | null
+          id: string
+          name: string
+          phone: string
+          photography_style: string | null
+          special_requests: string | null
+          status: string
+          updated_at: string
+          venue: string | null
+        }
+        Insert: {
+          add_ons?: string[] | null
+          ceremonies?: string[] | null
+          created_at?: string
+          duration?: string | null
+          email: string
+          estimated_quote?: number | null
+          event_date?: string | null
+          event_type: string
+          guest_count?: string | null
+          id?: string
+          name: string
+          phone: string
+          photography_style?: string | null
+          special_requests?: string | null
+          status?: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Update: {
+          add_ons?: string[] | null
+          ceremonies?: string[] | null
+          created_at?: string
+          duration?: string | null
+          email?: string
+          estimated_quote?: number | null
+          event_date?: string | null
+          event_type?: string
+          guest_count?: string | null
+          id?: string
+          name?: string
+          phone?: string
+          photography_style?: string | null
+          special_requests?: string | null
+          status?: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          price: number
+          service_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          price: number
+          service_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          price?: number
+          service_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
