@@ -74,7 +74,13 @@ const photographyStyles = [
   { id: 'contemporary', name: 'Contemporary', description: 'Modern artistic photography' },
 ];
 
-const EnquiryForm = () => {
+interface EnquiryFormProps {
+  onFormSubmitted?: () => void;
+  showPortfolioButton?: boolean;
+  onViewPortfolio?: () => void;
+}
+
+const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: EnquiryFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -194,8 +200,13 @@ const EnquiryForm = () => {
         throw error;
       }
 
-      // Redirect to thank you page
-      navigate('/thank-you');
+      // Show success message and portfolio button
+      toast({
+        title: "Thank You!",
+        description: "Your enquiry has been submitted successfully. We'll get back to you soon!",
+      });
+      
+      onFormSubmitted?.();
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -594,14 +605,32 @@ const EnquiryForm = () => {
                     Next
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </section>
-  );
+                 )}
+               </div>
+               
+               {/* Portfolio Button - Show after form submission */}
+               {showPortfolioButton && (
+                 <div className="text-center pt-6 border-t">
+                   <div className="space-y-3">
+                     <p className="text-muted-foreground">Want to see our work?</p>
+                     <Button
+                       variant="premium"
+                       size="lg"
+                       onClick={onViewPortfolio}
+                       className="animate-fade-in"
+                     >
+                       <Camera className="mr-2 h-5 w-5" />
+                       View Our Portfolio
+                     </Button>
+                   </div>
+                 </div>
+               )}
+             </CardContent>
+           </Card>
+         </div>
+       </div>
+     </section>
+   );
 };
 
 export default EnquiryForm;
