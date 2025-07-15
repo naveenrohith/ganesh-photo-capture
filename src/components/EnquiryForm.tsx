@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -73,13 +74,7 @@ const photographyStyles = [
   { id: 'contemporary', name: 'Contemporary', description: 'Modern artistic photography' },
 ];
 
-interface EnquiryFormProps {
-  onFormSubmitted?: () => void;
-  showPortfolioButton?: boolean;
-  onViewPortfolio?: () => void;
-}
-
-const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: EnquiryFormProps) => {
+const EnquiryForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -98,6 +93,7 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { toast } = useToast();
+  const navigate = useNavigate();
   const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
 
@@ -198,30 +194,8 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         throw error;
       }
 
-      console.log('Form submitted:', formData);
-      toast({
-        title: "Quote Request Submitted!",
-        description: "We'll contact you within 24 hours with your personalized quote.",
-      });
-      
-      // Notify parent component
-      onFormSubmitted?.();
-      
-      // Reset form
-      setCurrentStep(1);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        eventType: '',
-        venue: '',
-        ceremonies: [],
-        duration: '',
-        guestCount: '',
-        style: '',
-        addOns: [],
-        specialRequests: '',
-      });
+      // Redirect to thank you page
+      navigate('/thank-you');
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -624,20 +598,6 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
               </div>
             </CardContent>
           </Card>
-          
-          {showPortfolioButton && (
-            <div className="text-center mt-8">
-              <Button
-                variant="premium"
-                size="lg"
-                onClick={onViewPortfolio}
-                className="flex items-center space-x-2"
-              >
-                <Camera className="h-5 w-5" />
-                <span>View Our Portfolio</span>
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     </section>

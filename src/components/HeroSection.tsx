@@ -50,8 +50,8 @@ const HeroSection = () => {
             From intimate ceremonies to grand celebrations, we capture the emotions that matter most.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+          {/* CTA Button */}
+          <div className="flex justify-center pt-8">
             <Button
               variant="premium"
               size="lg"
@@ -59,15 +59,6 @@ const HeroSection = () => {
               className="text-lg px-8 py-4 min-w-[200px]"
             >
               Get Instant Quote
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-lg px-8 py-4 min-w-[200px] border-white/30 text-white hover:bg-white/10"
-            >
-              <Camera className="mr-2 h-5 w-5" />
-              View Portfolio
             </Button>
           </div>
 
