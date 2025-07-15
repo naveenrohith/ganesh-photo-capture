@@ -33,6 +33,7 @@ const Index = () => {
         showPortfolioButton={showPortfolio}
         onViewPortfolio={scrollToPortfolio}
       />
+      {/* Portfolio is now only shown after form submission */}
       {showPortfolio && <PortfolioSection />}
       <Footer />
     </div>

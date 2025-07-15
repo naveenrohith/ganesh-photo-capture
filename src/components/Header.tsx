@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, Mail, Instagram, Camera, Award } from "lucide-react";
+import { Menu, X, Phone, Mail, Instagram, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -23,125 +23,130 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-xl' 
+        ? 'bg-white/90 backdrop-blur-md border-b border-gray-200/50 shadow-lg' 
         : 'bg-transparent'
     }`}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Main Navigation */}
-        <div className="flex items-center justify-between h-20">
-          {/* Logo Section */}
-          <div className="flex items-center space-x-4">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo Section - Made Brighter and Larger */}
+          <div className="flex items-center space-x-3">
             <div className="relative">
               <img 
                 src="/lovable-uploads/1f1f3ce2-583f-4e7e-a019-835bb00a5e71.png" 
                 alt="Ganesh Vijjapu Photography" 
-                className="h-12 w-auto transition-all duration-300"
+                className={`h-14 w-auto transition-all duration-300 ${
+                  isScrolled ? 'brightness-100 contrast-125' : 'brightness-125 contrast-150 drop-shadow-lg'
+                }`}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                   e.currentTarget.nextElementSibling.style.display = 'flex';
                 }}
               />
-              <div className="hidden items-center justify-center w-12 h-12 bg-black rounded-lg">
-                <span className="text-white font-bold text-xl">GV</span>
+              <div className="hidden items-center justify-center w-14 h-14 bg-black rounded-lg shadow-lg">
+                <span className="text-white font-bold text-2xl">GV</span>
               </div>
             </div>
             <div className="hidden sm:block">
-              <h1 className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
-                isScrolled ? 'text-gray-900' : 'text-white'
+              <h1 className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
+                isScrolled ? 'text-gray-900' : 'text-white drop-shadow-md'
               }`}>
                 Ganesh Vijjapu
               </h1>
-              <p className={`text-sm font-medium tracking-wide transition-colors duration-300 ${
-                isScrolled ? 'text-gray-600' : 'text-white/80'
+              <p className={`text-xs font-medium tracking-wider transition-colors duration-300 ${
+                isScrolled ? 'text-gray-600' : 'text-white/90 drop-shadow-sm'
               }`}>
                 PHOTOGRAPHY
               </p>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-12">
-            {['Home', 'Services', 'Portfolio', 'Contact'].map((item, index) => (
+          {/* Desktop Navigation - Minimized */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {['Home', 'Services', 'Contact'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase() === 'home' ? 'hero' : item.toLowerCase() === 'contact' ? 'enquiry-form' : item.toLowerCase())}
-                className={`relative text-sm font-semibold tracking-wide uppercase transition-all duration-300 group ${
-                  isScrolled ? 'text-gray-700 hover:text-black' : 'text-white/90 hover:text-white'
+                className={`relative text-sm font-medium transition-all duration-300 group ${
+                  isScrolled ? 'text-gray-700 hover:text-black' : 'text-white/90 hover:text-white drop-shadow-sm'
                 }`}
               >
                 {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
-          </nav>
-
-          {/* CTA and Mobile Menu */}
-          <div className="flex items-center space-x-4">
             <Button
               onClick={() => scrollToSection('enquiry-form')}
-              className="hidden lg:flex bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-medium px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               <Camera className="w-4 h-4 mr-2" />
               Book Now
             </Button>
+          </nav>
 
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`lg:hidden p-2 rounded-lg transition-all duration-300 ${
-                isScrolled 
-                  ? 'text-gray-700 hover:bg-gray-100' 
-                  : 'text-white hover:bg-white/10'
-              }`}
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className={`lg:hidden p-2 rounded-lg transition-all duration-300 ${
+              isScrolled 
+                ? 'text-gray-700 hover:bg-gray-100' 
+                : 'text-white hover:bg-white/10 drop-shadow-sm'
+            }`}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
-          isMenuOpen ? 'max-h-96 opacity-100 pb-6' : 'max-h-0 opacity-0'
+        {/* Mobile Navigation - Vertical Right Side */}
+        <div className={`lg:hidden fixed top-16 right-0 h-screen w-80 bg-white/95 backdrop-blur-md shadow-2xl transform transition-transform duration-300 ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
-          <nav className="space-y-4 pt-4 border-t border-white/20">
-            {['Home', 'Services', 'Portfolio', 'Contact'].map((item) => (
+          <nav className="flex flex-col p-6 space-y-6">
+            {['Home', 'Services', 'Contact'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase() === 'home' ? 'hero' : item.toLowerCase() === 'contact' ? 'enquiry-form' : item.toLowerCase())}
-                className={`block w-full text-left px-4 py-3 font-semibold transition-colors ${
-                  isScrolled 
-                    ? 'text-gray-700 hover:text-black' 
-                    : 'text-white hover:text-amber-400'
-                }`}
+                className="text-left text-lg font-medium text-gray-800 hover:text-amber-600 transition-colors py-2 border-b border-gray-200"
               >
                 {item}
               </button>
             ))}
             
-            <div className="px-4 pt-4 space-y-4">
+            <div className="pt-6 space-y-4">
               <Button
                 onClick={() => scrollToSection('enquiry-form')}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold py-3 rounded-full"
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium py-3 rounded-full"
               >
                 <Camera className="w-4 h-4 mr-2" />
                 Book Now
               </Button>
               
-              <div className="flex items-center justify-center space-x-6 pt-4">
-                <a href="tel:+919640614333" className={`flex items-center space-x-2 text-sm ${isScrolled ? 'text-gray-600' : 'text-white/80'}`}>
-                  <Phone className="w-4 h-4" />
-                  <span>Call Now</span>
+              <div className="flex flex-col space-y-3 pt-4 border-t border-gray-200">
+                <a href="tel:+919640614333" className="flex items-center space-x-3 text-gray-600 hover:text-amber-600 transition-colors">
+                  <Phone className="w-5 h-5" />
+                  <span>+91 96406 14333</span>
                 </a>
-                <a href="https://instagram.com/ganeshphotography.co" target="_blank" rel="noopener noreferrer" className={`flex items-center space-x-2 text-sm ${isScrolled ? 'text-gray-600' : 'text-white/80'}`}>
-                  <Instagram className="w-4 h-4" />
-                  <span>Follow</span>
+                <a href="mailto:ganeshphotography333@gmail.com" className="flex items-center space-x-3 text-gray-600 hover:text-amber-600 transition-colors">
+                  <Mail className="w-5 h-5" />
+                  <span>ganeshphotography333@gmail.com</span>
+                </a>
+                <a href="https://instagram.com/ganeshphotography.co" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-600 hover:text-amber-600 transition-colors">
+                  <Instagram className="w-5 h-5" />
+                  <span>@ganeshphotography.co</span>
                 </a>
               </div>
             </div>
           </nav>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1]"
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
       </div>
     </header>
   );
