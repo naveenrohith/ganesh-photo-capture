@@ -73,7 +73,13 @@ const photographyStyles = [
   { id: 'contemporary', name: 'Contemporary', description: 'Modern artistic photography' },
 ];
 
-const EnquiryForm = () => {
+interface EnquiryFormProps {
+  onFormSubmitted?: () => void;
+  showPortfolioButton?: boolean;
+  onViewPortfolio?: () => void;
+}
+
+const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: EnquiryFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -197,6 +203,9 @@ const EnquiryForm = () => {
         title: "Quote Request Submitted!",
         description: "We'll contact you within 24 hours with your personalized quote.",
       });
+      
+      // Notify parent component
+      onFormSubmitted?.();
       
       // Reset form
       setCurrentStep(1);
@@ -615,6 +624,20 @@ const EnquiryForm = () => {
               </div>
             </CardContent>
           </Card>
+          
+          {showPortfolioButton && (
+            <div className="text-center mt-8">
+              <Button
+                variant="premium"
+                size="lg"
+                onClick={onViewPortfolio}
+                className="flex items-center space-x-2"
+              >
+                <Camera className="h-5 w-5" />
+                <span>View Our Portfolio</span>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </section>
