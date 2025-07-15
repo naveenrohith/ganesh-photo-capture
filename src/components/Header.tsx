@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Phone, Mail, Instagram } from "lucide-react";
+import { Menu, X, Phone, Mail, Instagram, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -14,113 +14,114 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b shadow-soft">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <img 
-            src="/lovable-uploads/1f1f3ce2-583f-4e7e-a019-835bb00a5e71.png" 
-            alt="Ganesh Vijjapu Photography Logo" 
-            className="h-10 w-auto logo-animate"
-          />
-          <div className="hidden sm:block">
-            <h1 className="text-xl font-bold text-foreground">Ganesh Vijjapu</h1>
-            <p className="text-xs text-muted-foreground">Photography</p>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
+      <div className="container mx-auto px-4 py-2">
+        <div className="flex items-center justify-between">
+          {/* Logo - Stable and Professional */}
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold-hover rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg">
+              <Camera className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xl font-semibold text-gray-800 tracking-tight">Ganesh Photography</span>
           </div>
-        </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          <button 
-            onClick={() => scrollToSection('hero')}
-            className="text-foreground hover:text-accent transition-smooth"
-          >
-            Home
-          </button>
-          <button 
-            onClick={() => scrollToSection('services')}
-            className="text-foreground hover:text-accent transition-smooth"
-          >
-            Services
-          </button>
-          <button 
-            onClick={() => scrollToSection('contact')}
-            className="text-foreground hover:text-accent transition-smooth"
-          >
-            Contact
-          </button>
-        </div>
-
-        {/* Contact Info */}
-        <div className="hidden lg:flex items-center space-x-4">
-          <div className="flex items-center space-x-2 text-sm">
-            <Phone className="h-4 w-4 text-accent" />
-            <span>96406 14333</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="premium"
-              size="sm"
-              onClick={() => scrollToSection('enquiry-form')}
-            >
-              Get Quote
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-background border-t">
-          <div className="container mx-auto px-4 py-4 space-y-4">
+          {/* Desktop Navigation - Compact */}
+          <nav className="hidden md:flex items-center space-x-6">
             <button 
               onClick={() => scrollToSection('hero')}
-              className="block w-full text-left py-2 text-foreground hover:text-accent transition-smooth"
+              className="text-gray-700 hover:text-gold transition-colors font-medium text-sm"
             >
               Home
             </button>
             <button 
               onClick={() => scrollToSection('services')}
-              className="block w-full text-left py-2 text-foreground hover:text-accent transition-smooth"
+              className="text-gray-700 hover:text-gold transition-colors font-medium text-sm"
             >
               Services
             </button>
             <button 
+              onClick={() => scrollToSection('portfolio')}
+              className="text-gray-700 hover:text-gold transition-colors font-medium text-sm"
+            >
+              Portfolio
+            </button>
+            <button 
               onClick={() => scrollToSection('contact')}
-              className="block w-full text-left py-2 text-foreground hover:text-accent transition-smooth"
+              className="text-gray-700 hover:text-gold transition-colors font-medium text-sm"
             >
               Contact
             </button>
-            
-            {/* Mobile Contact */}
-            <div className="pt-4 border-t space-y-3">
-              <div className="flex items-center space-x-2 text-sm">
-                <Phone className="h-4 w-4 text-accent" />
-                <span>96406 14333</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Mail className="h-4 w-4 text-accent" />
-                <span>ganeshphotography333@gmail.com</span>
-              </div>
-              <Button
-                variant="premium"
-                className="w-full"
-                onClick={() => scrollToSection('enquiry-form')}
-              >
-                Get Instant Quote
-              </Button>
-            </div>
+          </nav>
+
+          {/* Contact Info - Compact */}
+          <div className="hidden lg:flex items-center space-x-3">
+            <a href="tel:+919999999999" className="flex items-center space-x-1 text-gray-600 hover:text-gold transition-colors text-sm">
+              <Phone className="w-4 h-4" />
+              <span>+91 99999 99999</span>
+            </a>
+            <a href="mailto:info@ganeshphoto.com" className="flex items-center space-x-1 text-gray-600 hover:text-gold transition-colors text-sm">
+              <Mail className="w-4 h-4" />
+              <span>info@ganeshphoto.com</span>
+            </a>
+            <a href="https://instagram.com/ganeshphoto" className="flex items-center space-x-1 text-gray-600 hover:text-gold transition-colors">
+              <Instagram className="w-4 h-4" />
+            </a>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 text-gray-700 hover:text-gold transition-colors"
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
-      )}
+
+        {/* Mobile Navigation - Compact */}
+        {isMenuOpen && (
+          <nav className="md:hidden mt-3 py-3 border-t border-gray-200">
+            <div className="flex flex-col space-y-3">
+              <button 
+                onClick={() => scrollToSection('hero')}
+                className="text-left text-gray-700 hover:text-gold transition-colors font-medium text-sm"
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => scrollToSection('services')}
+                className="text-left text-gray-700 hover:text-gold transition-colors font-medium text-sm"
+              >
+                Services
+              </button>
+              <button 
+                onClick={() => scrollToSection('portfolio')}
+                className="text-left text-gray-700 hover:text-gold transition-colors font-medium text-sm"
+              >
+                Portfolio
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="text-left text-gray-700 hover:text-gold transition-colors font-medium text-sm"
+              >
+                Contact
+              </button>
+              <div className="pt-3 border-t border-gray-200">
+                <a href="tel:+919999999999" className="flex items-center space-x-2 text-gray-600 hover:text-gold transition-colors mb-2 text-sm">
+                  <Phone className="w-4 h-4" />
+                  <span>+91 99999 99999</span>
+                </a>
+                <a href="mailto:info@ganeshphoto.com" className="flex items-center space-x-2 text-gray-600 hover:text-gold transition-colors mb-2 text-sm">
+                  <Mail className="w-4 h-4" />
+                  <span>info@ganeshphoto.com</span>
+                </a>
+                <a href="https://instagram.com/ganeshphoto" className="flex items-center space-x-2 text-gray-600 hover:text-gold transition-colors text-sm">
+                  <Instagram className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </nav>
+        )}
+      </div>
     </header>
   );
 };
