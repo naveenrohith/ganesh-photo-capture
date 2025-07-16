@@ -17,7 +17,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden py-16">
       {/* Background with Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -35,12 +35,12 @@ const HeroSection = () => {
       <div className="absolute bottom-40 left-20 w-2 h-2 bg-amber-300 rounded-full animate-pulse delay-500 opacity-50"></div>
 
       {/* Main Content */}
-      <div className="relative z-10 text-center text-white px-6 max-w-6xl mx-auto">
-        <div className="space-y-12">
+      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="space-y-8 lg:space-y-12">
           {/* Main Headline */}
-          <div className="space-y-8 animate-fade-in-up">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight">
-              <span className="block text-white/90 font-light mb-4">Capturing</span>
+          <div className="space-y-6 lg:space-y-8 animate-fade-in-up">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight">
+              <span className="block text-white/90 font-light mb-2 sm:mb-4">Capturing</span>
               <span className="block font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text text-transparent">
                 Life's Precious
               </span>
@@ -48,13 +48,13 @@ const HeroSection = () => {
                 Moments
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed px-4 sm:px-0">
               Professional wedding and event photography that transforms your special occasions into timeless memories with artistic excellence and emotional depth.
             </p>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 animate-fade-in-up delay-300">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-6 sm:pt-8 animate-fade-in-up delay-300">
             <Button 
               onClick={scrollToForm}
               size="lg" 
@@ -75,7 +75,7 @@ const HeroSection = () => {
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16 animate-fade-in-up delay-500">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-12 sm:pt-16 animate-fade-in-up delay-500">
             <div className="text-center group">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-400/30 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Camera className="w-8 h-8 text-amber-400" />
@@ -100,7 +100,7 @@ const HeroSection = () => {
           </div>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-16 animate-fade-in-up delay-700">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 pt-12 sm:pt-16 animate-fade-in-up delay-700">
             <div className="text-center group cursor-pointer">
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">
                 500+

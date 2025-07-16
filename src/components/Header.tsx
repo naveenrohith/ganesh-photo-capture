@@ -40,8 +40,10 @@ const Header = () => {
                   isScrolled ? 'brightness-100 contrast-125' : 'brightness-125 contrast-150 drop-shadow-lg'
                 }`}
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                  const target = e.currentTarget as HTMLImageElement;
+                  const sibling = target.nextElementSibling as HTMLElement;
+                  target.style.display = 'none';
+                  if (sibling) sibling.style.display = 'flex';
                 }}
               />
               <div className="hidden items-center justify-center w-14 h-14 bg-black rounded-lg shadow-lg">
