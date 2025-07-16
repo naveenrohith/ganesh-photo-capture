@@ -22,7 +22,9 @@ import {
   Users, 
   Clock,
   Sparkles,
-  Gift
+  Gift,
+  Shield,
+  Award
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -203,7 +205,7 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
       // Show success message and portfolio button
       toast({
         title: "Thank You!",
-        description: "Your enquiry has been submitted successfully. We'll get back to you soon!",
+        description: "Your enquiry has been submitted successfully. We'll get back to you within 24 hours!",
       });
       
       onFormSubmitted?.();
@@ -226,42 +228,43 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         return (
           <div className="space-y-6 step-slide-in">
             <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Let's Get Started</h3>
-              <p className="text-muted-foreground">Tell us about yourself</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Let's Get Started</h3>
+              <p className="text-muted-foreground">Tell us about yourself so we can create your perfect quote</p>
             </div>
             
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Full Name *</Label>
+                <Label htmlFor="name" className="text-base font-medium">Full Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   placeholder="Enter your full name"
-                  className="mt-1"
+                  className="mt-2 h-12 text-base"
                 />
               </div>
               
               <div>
-                <Label htmlFor="email">Email Address *</Label>
+                <Label htmlFor="email" className="text-base font-medium">Email Address *</Label>
                 <Input
                   id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   placeholder="your@email.com"
-                  className="mt-1"
+                  className="mt-2 h-12 text-base"
                 />
+                <p className="text-xs text-muted-foreground mt-1">We'll never spam your email</p>
               </div>
               
               <div>
-                <Label htmlFor="phone">Phone Number *</Label>
+                <Label htmlFor="phone" className="text-base font-medium">Phone Number *</Label>
                 <Input
                   id="phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   placeholder="+91 98765 43210"
-                  className="mt-1"
+                  className="mt-2 h-12 text-base"
                 />
               </div>
             </div>
@@ -272,18 +275,18 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         return (
           <div className="space-y-6 step-slide-in">
             <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">What's Your Event?</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">What's Your Event?</h3>
               <p className="text-muted-foreground">Choose the type of event you're planning</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {eventTypes.map((event) => {
                 const Icon = event.icon;
                 return (
                   <div
                     key={event.id}
                     className={cn(
-                      "p-6 border rounded-lg cursor-pointer transition-all hover:shadow-soft",
+                      "p-6 border-2 rounded-xl cursor-pointer transition-all hover:shadow-soft min-h-[120px]",
                       formData.eventType === event.id 
                         ? "border-accent bg-accent/10 shadow-gold" 
                         : "border-border hover:border-accent/50"
@@ -291,11 +294,11 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                     onClick={() => setFormData({...formData, eventType: event.id})}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className="p-2 bg-accent/20 rounded-full">
-                        <Icon className="h-6 w-6 text-accent" />
+                      <div className="p-3 bg-accent/20 rounded-full">
+                        <Icon className="h-8 w-8 text-accent" />
                       </div>
                       <div>
-                        <h4 className="font-semibold">{event.name}</h4>
+                        <h4 className="font-semibold text-lg">{event.name}</h4>
                         <p className="text-sm text-muted-foreground">{event.price}</p>
                       </div>
                     </div>
@@ -310,24 +313,24 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         return (
           <div className="space-y-6 step-slide-in">
             <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Event Details</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Event Details</h3>
               <p className="text-muted-foreground">Tell us more about your {formData.eventType}</p>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <Label>Event Date *</Label>
+                <Label className="text-base font-medium">Event Date *</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal mt-1",
+                        "w-full justify-start text-left font-normal mt-2 h-12 text-base",
                         !formData.date && "text-muted-foreground"
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.date ? format(formData.date, "PPP") : "Select date"}
+                      <CalendarIcon className="mr-2 h-5 w-5" />
+                      {formData.date ? format(formData.date, "PPP") : "Select your event date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -342,22 +345,22 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
               </div>
               
               <div>
-                <Label htmlFor="venue">Venue Location</Label>
+                <Label htmlFor="venue" className="text-base font-medium">Venue Location</Label>
                 <Input
                   id="venue"
                   value={formData.venue}
                   onChange={(e) => setFormData({...formData, venue: e.target.value})}
                   placeholder="Enter venue or city"
-                  className="mt-1"
+                  className="mt-2 h-12 text-base"
                 />
               </div>
 
               {formData.eventType === 'wedding' && (
                 <div>
-                  <Label>Ceremonies to Cover</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                  <Label className="text-base font-medium">Ceremonies to Cover</Label>
+                  <div className="grid grid-cols-1 gap-3 mt-3">
                     {ceremonies.map((ceremony) => (
-                      <div key={ceremony.service_id} className="flex items-center space-x-2">
+                      <div key={ceremony.service_id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50">
                         <Checkbox
                           id={ceremony.service_id}
                           checked={formData.ceremonies.includes(ceremony.service_id)}
@@ -375,15 +378,18 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                             }
                           }}
                         />
-                        <Label htmlFor={ceremony.service_id} className="text-sm font-normal">
-                          {ceremony.name} - ₹{ceremony.price.toLocaleString()}
+                        <Label htmlFor={ceremony.service_id} className="text-base font-normal flex-1">
+                          <div className="flex justify-between items-center">
+                            <span>{ceremony.name}</span>
+                            <span className="font-semibold text-accent">₹{ceremony.price.toLocaleString()}</span>
+                          </div>
                         </Label>
                       </div>
                     ))}
                   </div>
                   {formData.ceremonies.length >= 3 && (
-                    <Badge variant="secondary" className="mt-2">
-                      <Sparkles className="mr-1 h-3 w-3" />
+                    <Badge variant="secondary" className="mt-3">
+                      <Sparkles className="mr-1 h-4 w-4" />
                       15% Bundle Discount Applied!
                     </Badge>
                   )}
@@ -393,24 +399,24 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
               {(formData.eventType === 'birthday' || formData.eventType === 'corporate') && (
                 <>
                   <div>
-                    <Label htmlFor="guestCount">Expected Guest Count</Label>
+                    <Label htmlFor="guestCount" className="text-base font-medium">Expected Guest Count</Label>
                     <Input
                       id="guestCount"
                       value={formData.guestCount}
                       onChange={(e) => setFormData({...formData, guestCount: e.target.value})}
                       placeholder="e.g., 50-100"
-                      className="mt-1"
+                      className="mt-2 h-12 text-base"
                     />
                   </div>
                   
                   <div>
-                    <Label htmlFor="duration">Event Duration</Label>
+                    <Label htmlFor="duration" className="text-base font-medium">Event Duration</Label>
                     <Input
                       id="duration"
                       value={formData.duration}
                       onChange={(e) => setFormData({...formData, duration: e.target.value})}
                       placeholder="e.g., 4 hours"
-                      className="mt-1"
+                      className="mt-2 h-12 text-base"
                     />
                   </div>
                 </>
@@ -423,38 +429,38 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         return (
           <div className="space-y-6 step-slide-in">
             <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Style & Add-ons</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Style & Add-ons</h3>
               <p className="text-muted-foreground">Customize your photography experience</p>
             </div>
             
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <Label>Photography Style</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                <Label className="text-base font-medium">Photography Style</Label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
                   {photographyStyles.map((style) => (
                     <div
                       key={style.id}
                       className={cn(
-                        "p-4 border rounded-lg cursor-pointer transition-all",
+                        "p-4 border-2 rounded-xl cursor-pointer transition-all min-h-[100px]",
                         formData.style === style.id 
                           ? "border-accent bg-accent/10" 
                           : "border-border hover:border-accent/50"
                       )}
                       onClick={() => setFormData({...formData, style: style.id})}
                     >
-                      <h4 className="font-semibold">{style.name}</h4>
-                      <p className="text-sm text-muted-foreground">{style.description}</p>
+                      <h4 className="font-semibold text-lg mb-2">{style.name}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{style.description}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <Label>Add-ons</Label>
-                <div className="space-y-3 mt-2">
+                <Label className="text-base font-medium">Add-ons (Optional)</Label>
+                <div className="space-y-3 mt-3">
                   {addOns.map((addOn) => (
-                    <div key={addOn.service_id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center space-x-3">
+                    <div key={addOn.service_id} className="flex items-center justify-between p-4 border rounded-xl hover:bg-muted/50">
+                      <div className="flex items-center space-x-3 flex-1">
                         <Checkbox
                           id={addOn.service_id}
                           checked={formData.addOns.includes(addOn.service_id)}
@@ -472,11 +478,14 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                             }
                           }}
                         />
-                        <Label htmlFor={addOn.service_id} className="font-normal">
-                          {addOn.name}
-                        </Label>
+                        <div className="flex-1">
+                          <Label htmlFor={addOn.service_id} className="font-medium text-base">
+                            {addOn.name}
+                          </Label>
+                          <p className="text-sm text-muted-foreground">{addOn.description}</p>
+                        </div>
                       </div>
-                      <span className="text-sm font-semibold">+₹{addOn.price.toLocaleString()}</span>
+                      <span className="text-lg font-bold text-accent">+₹{addOn.price.toLocaleString()}</span>
                     </div>
                   ))}
                 </div>
@@ -490,19 +499,19 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
         return (
           <div className="space-y-6 step-slide-in">
             <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Your Quote Summary</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Your Quote Summary</h3>
               <p className="text-muted-foreground">Review and finalize your booking</p>
             </div>
             
-            <Card className="shadow-gold">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Estimated Quote</span>
-                  <span className="text-2xl font-bold text-accent">₹{quote.toLocaleString()}</span>
+            <Card className="shadow-gold border-2 border-accent/20">
+              <CardHeader className="text-center">
+                <CardTitle className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xl">Estimated Quote</span>
+                  <span className="text-3xl font-bold text-accent">₹{quote.toLocaleString()}</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base">
                   <div className="flex justify-between">
                     <span>Event Type:</span>
                     <span className="font-semibold capitalize">{formData.eventType}</span>
@@ -524,22 +533,38 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                     </div>
                   )}
                 </div>
+                
+                {/* Trust indicators */}
+                <div className="flex flex-wrap justify-center gap-4 pt-4 border-t">
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <Shield className="h-4 w-4 text-green-600" />
+                    <span>100% Secure</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <Award className="h-4 w-4 text-amber-600" />
+                    <span>5-Star Rated</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <Clock className="h-4 w-4 text-blue-600" />
+                    <span>24hr Response</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
             <div>
-              <Label htmlFor="specialRequests">Special Requests (Optional)</Label>
+              <Label htmlFor="specialRequests" className="text-base font-medium">Special Requests (Optional)</Label>
               <Textarea
                 id="specialRequests"
                 value={formData.specialRequests}
                 onChange={(e) => setFormData({...formData, specialRequests: e.target.value})}
                 placeholder="Any specific requirements, shot lists, or special moments you'd like us to capture..."
-                className="mt-1 min-h-[100px]"
+                className="mt-2 min-h-[100px] text-base"
               />
             </div>
 
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-4">
+            <div className="text-center space-y-4">
+              <p className="text-sm text-muted-foreground">
                 This is an estimated quote. Final pricing may vary based on specific requirements.
               </p>
               <Button
@@ -547,10 +572,10 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                 size="lg"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="w-full"
+                className="w-full min-h-[56px] text-lg font-semibold"
               >
                 <CheckCircle className="mr-2 h-5 w-5" />
-                {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
+                {isSubmitting ? 'Submitting Your Quote...' : 'Get My Free Quote'}
               </Button>
             </div>
           </div>
@@ -562,29 +587,34 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
   };
 
   return (
-    <section id="enquiry-form" className="py-20 bg-muted/30">
+    <section id="enquiry-form" className="py-16 sm:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
-          <Card className="shadow-hero">
+          {/* Form Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Get Your Free Quote</h2>
+            <p className="text-muted-foreground text-lg">Simple 5-step process • No spam • 24hr response</p>
+          </div>
+
+          <Card className="shadow-hero border-2">
             <CardHeader>
               <div className="space-y-4">
                 <div className="text-center">
-                  <h2 className="text-3xl font-bold text-foreground">Get Your Quote</h2>
-                  <p className="text-muted-foreground">Step {currentStep} of {totalSteps}</p>
+                  <p className="text-muted-foreground text-lg">Step {currentStep} of {totalSteps}</p>
                 </div>
-                <Progress value={progress} className="w-full" />
+                <Progress value={progress} className="w-full h-3" />
               </div>
             </CardHeader>
             
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8 p-6 sm:p-8">
               {renderStep()}
               
-              <div className="flex justify-between pt-6">
+              <div className="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t">
                 <Button
                   variant="outline"
                   onClick={prevStep}
                   disabled={currentStep === 1}
-                  className="flex items-center"
+                  className="flex items-center min-h-[48px] font-medium"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous
@@ -600,37 +630,37 @@ const EnquiryForm = ({ onFormSubmitted, showPortfolioButton, onViewPortfolio }: 
                       (currentStep === 3 && !formData.date) ||
                       (currentStep === 4 && !formData.style)
                     }
-                    className="flex items-center"
+                    className="flex items-center min-h-[48px] font-medium"
                   >
-                    Next
+                    Continue to Step {currentStep + 1}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                 )}
-               </div>
-               
-               {/* Portfolio Button - Show after form submission */}
-               {showPortfolioButton && (
-                 <div className="text-center pt-6 border-t">
-                   <div className="space-y-3">
-                     <p className="text-muted-foreground">Want to see our work?</p>
-                     <Button
-                       variant="premium"
-                       size="lg"
-                       onClick={onViewPortfolio}
-                       className="animate-fade-in"
-                     >
-                       <Camera className="mr-2 h-5 w-5" />
-                       View Our Portfolio
-                     </Button>
-                   </div>
-                 </div>
-               )}
-             </CardContent>
-           </Card>
-         </div>
-       </div>
-     </section>
-   );
+                )}
+              </div>
+              
+              {/* Portfolio Button - Show after form submission */}
+              {showPortfolioButton && (
+                <div className="text-center pt-6 border-t">
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">Want to see our work?</p>
+                    <Button
+                      variant="premium"
+                      size="lg"
+                      onClick={onViewPortfolio}
+                      className="animate-fade-in min-h-[56px] text-lg font-semibold"
+                    >
+                      <Camera className="mr-2 h-5 w-5" />
+                      View Our Portfolio
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default EnquiryForm;
