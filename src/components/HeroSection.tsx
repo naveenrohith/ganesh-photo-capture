@@ -36,18 +36,18 @@ const HeroSection = () => {
       <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-pulse delay-1000 opacity-30"></div>
       <div className="absolute bottom-1/3 left-20 w-1.5 h-1.5 bg-amber-300 rounded-full animate-pulse delay-500 opacity-40"></div>
 
-      {/* Main Content */}
-      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-        <div className="space-y-10 lg:space-y-12">
-          {/* Main Headline - Reduced size by ~20% */}
+      {/* Main Content - Perfectly Centered */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
+        <div className="text-center text-white max-w-4xl mx-auto">
+          {/* Main Headline - Centered in viewport */}
           <div className="space-y-6 animate-fade-in-up">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight">
-              <span className="block text-white font-light mb-2 sm:mb-3">Capturing</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight tracking-tight">
+              <span className="block text-white font-light mb-2 sm:mb-4">Capturing</span>
               <span className="block font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 bg-clip-text text-transparent">
                 Life's Precious Moments
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed px-2 sm:px-0 mt-6">
               Expert wedding & event photography across India with 5+ years experience and 1000+ happy clients
             </p>
           </div>
